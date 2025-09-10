@@ -5,25 +5,28 @@ import SearchIcon from '@mui/icons-material/Search'
 import HomeIcon from '@mui/icons-material/Home'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 
-const Navbar = ({ onMenuClick }) => {
+const SIDEBAR_WIDTH_EXPANDED = 220
+const SIDEBAR_WIDTH_COLLAPSED = 60
+
+const Navbar = ({ onMenuClick, sidebarOpen }) => {
   const isMobile = useMediaQuery('(max-width:768px)')
+  const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED
 
   return (
     <Box
       sx={{
-        width: '100vw', // Always full viewport width
+        position: 'fixed',
+        top: 0,
+        left: isMobile ? 0 : `${sidebarWidth}px`,
+        width: isMobile ? '100vw' : `calc(100vw - ${sidebarWidth}px)`,
         height: 56,
         background: '#353e50',
         display: 'flex',
         alignItems: 'center',
         px: { xs: 1, sm: 3 },
         justifyContent: 'space-between',
-        marginLeft: 0,
-        position: isMobile ? 'fixed' : 'static',
-        top: isMobile ? 0 : 'auto',
-        left: isMobile ? 0 : 'auto',
-        right: isMobile ? 0 : 'auto',
         zIndex: 1201,
+        transition: 'left 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}
     >
       {/* Left: Menu Icon */}

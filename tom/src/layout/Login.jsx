@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Paper,
@@ -15,8 +16,15 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const backgroundUrl =
   'https://www.tom.sg/wp-content/uploads/2021/12/banner.jpg'; // Replace with your actual image if needed
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    // Your login logic here
+    if (onLogin) onLogin();
+    navigate('/dashboard');
+  };
 
   return (
     <Box
@@ -91,6 +99,7 @@ const Login = () => {
           color="error"
           fullWidth
           sx={{ mt: 2, mb: 1, py: 1.2, fontWeight: 600, fontSize: 16, textTransform: 'none' }}
+          onClick={handleLogin}
         >
           Sign In
         </Button>
