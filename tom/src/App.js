@@ -24,6 +24,7 @@ import FinancialYearMaster from './components/FinancialYearMaster/FinancialYearM
 import SubsidyCompanyMaster from './components/SubsidyCompanyMaster/SubsidyCompanyMaster'
 import ProjectMaster from './components/ProjectMaster/ProjectMaster'
 import CostCenterCreation from './components/CostCenterCreation/CostCenterCreation'
+import AccountCreation from './components/AccountCreation/AccountCreation'
 
 const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
@@ -88,6 +89,7 @@ const App = () => {
             <Route path="/subsidy-company-master" element={isLoggedIn ? <SubsidyCompanyMaster sidebarOpen={sidebarOpen}/> : <Navigate to="/login" />} />
             <Route path="/project-master" element={isLoggedIn ? <ProjectMaster sidebarOpen={sidebarOpen}/> : <Navigate to="/login" />} />
             <Route path="/cost-center-creation" element={isLoggedIn ? <CostCenterCreation sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
+            <Route path="/account-creation" element={isLoggedIn ? <AccountCreation sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
 
 
            

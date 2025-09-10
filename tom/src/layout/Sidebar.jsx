@@ -45,7 +45,7 @@ const salesSubmenu = ['Sales Order', 'Sales Invoice'];
 const purchaseSubmenu = ['Purchase Order', 'Purchase Invoice'];
 const cashBankSubmenu = ['Cash Entry', 'Bank Entry'];
 const journalsSubmenu = ['Journal Entry'];
-const accountingSubmenu = ['Ledger', 'Trial Balance'];
+const accountingSubmenu = ["Account Creation", "Chart of Accounts"];
 const inventorySubmenu = ['Stock List', 'Stock Movement'];
 const productionSubmenu = ['Production Order'];
 const crmSubmenu = ['Leads', 'Opportunities'];
@@ -85,6 +85,10 @@ const submenuLinks = {
   "Subsidy Company Master": '/subsidy-company-master',
   "Project Master": '/project-master',
   "Cost Center Creation": '/cost-center-creation',
+
+  // accounting
+  "Account Creation": '/account-creation',
+  "Chart of Accounts": '/chart-of-accounts',
 
   // ...add other submenu label-to-path mappings
 };
