@@ -1,351 +1,268 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-  IconButton,
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  MenuItem,
-  Select,
-  Tooltip,
-  useMediaQuery
+  Box, Paper, Typography, TextField, Button, IconButton, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead,
+  TableRow, MenuItem, Select,
+  FormControl,
+  InputLabel,
+  FormControlLabel,
+  CircularProgress,
+  TablePagination
 } from '@mui/material'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import SaveIcon from '@mui/icons-material/Save'
+import EditIcon from '@mui/icons-material/Edit'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CancelIcon from '@mui/icons-material/Cancel'
 import PersonIcon from '@mui/icons-material/Person'
-
-const users = [
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  {
-    id: 1,
-    userId: 'Manager',
-    userName: 'Sasi kumar',
-    email: 'sasikumar@gmail.com',
-    role: 'Manager',
-    company: 'Tom-Erp',
-    active: true,
-    read: true,
-    edit: false,
-    delete: false,
-    alerts: true,
-  },
-  // ...repeat as needed
-]
-
-const roles = ['Manager', 'Admin', 'User']
+import SaveIcon from "@mui/icons-material/Save";
+import { createUser, getFetchAllUsers, getFetchRoles } from '../../services/api'
+import CloseIcon from '@mui/icons-material/Close';
 
 const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
+const STORAGE_KEY = "tomuc"
 
 const UserMaster = ({ sidebarOpen }) => {
-  const isMobile = useMediaQuery('(max-width:900px)')
   const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED
+  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const [rowCount, setRowCount] = useState(0);
+  const [usersList, setUsersList] = useState([]);
+
+  // form states
+  const [roleId, setroleId] = useState("");
+  const [userId, setuserId] = useState("");
+  const [userName, setuserName] = useState("");
+  const [inputEmail, setinputEmail] = useState("");
+  const [inputPassword, setinputPassword] = useState("");
+  const [active, setActive] = useState(false);
+
+  // validation errors
+  const [errors, setErrors] = useState({});
+
+  // fetch dropdowns
+  useEffect(() => {
+    const fetchDropdowns = async () => {
+      try {
+        const fchroles = await getFetchRoles();
+        setRoles(fchroles.data.data || []);
+      } catch (err) {
+        console.error("Failed to fetch dropdown data", err);
+      }
+    };
+    fetchDropdowns();
+  }, []);
+
+  // fetch users
+  const fetchUsersData = async () => {
+    try {
+      setLoading(true);
+      const response = await getFetchAllUsers({
+        page: paginationModel.page + 1,
+        limit: paginationModel.pageSize,
+      });
+      const usersData = response.data.data || [];
+      setUsersList(usersData);
+      setRowCount(response.data.pagenation?.total || 0);
+    } catch (err) {
+      console.error("Failed to fetch Users List", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsersData();
+  }, [paginationModel]);
+
+  // ✅ check localStorage on open
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setuserId(parsed.userId || "");
+      setuserName(parsed.userName || "");
+      setroleId(parsed.roleId || "");
+      setinputEmail(parsed.inputEmail || "");
+      setinputPassword(parsed.inputPassword || "");
+      setActive(parsed.active || false);
+    }
+  }, []);
+
+  // ✅ validate fields
+  const validateForm = () => {
+    let newErrors = {};
+    if (!userId) newErrors.userId = "User ID is required";
+    if (!userName) newErrors.userName = "User Name is required";
+    if (!roleId) newErrors.roleId = "Role is required";
+    if (!inputEmail) newErrors.inputEmail = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(inputEmail)) newErrors.inputEmail = "Invalid email";
+    if (!inputPassword) newErrors.inputPassword = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // ✅ cancel → clear fields + localStorage
+  const onHandleCancel = () => {
+    setuserId("");
+    setuserName("");
+    setroleId("");
+    setinputEmail("");
+    setinputPassword("");
+    setActive(false);
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
+  // ✅ save draft → store in localStorage
+  const onHandleSave = () => {
+    const data = { userId, userName, roleId, inputEmail, inputPassword, active };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  };
+
+  // ✅ submit → with validation
+  const onHandleCreateUserClick = async () => {
+    if (!validateForm()) return;
+    const payloadData = {
+      user_id: userId,
+      username: userName,
+      role: Number(roleId),
+      email: inputEmail,
+      password: inputPassword,
+      is_active: active,
+    };
+    try {
+      const response = await createUser(payloadData);
+      if (response.data.status === 201) {
+        fetchUsersData();
+        onHandleCancel(); // clear after submit
+      }
+    } catch (err) {
+      console.error("Error creating account:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ edit → populate fields
+  const onHandleEdit = (row) => {
+    setuserId(row.user_id);
+    setuserName(row.username);
+    setroleId(row.Role.role_id);
+    setinputEmail(row.email);
+    setinputPassword(""); // security: don't auto-fill password
+    setActive(row.active);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <Box
-      sx={{
-        p: { xs: 1, md: 3 },
-        bgcolor: '#f7f9fb',
-        minHeight: '100vh',
-        width: { xs: '100vw', md: `calc(100vw - ${sidebarWidth}px)` },
-        transition: 'width 0.3s cubic-bezier(0.4,0,0.2,1)',
-      }}
-    >
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
-        <PersonIcon color="primary" sx={{ fontSize: 24, mr: 1 }} />
-        <Typography variant="h6" fontWeight={600} sx={{ fontSize: { xs: 18, md: 22 } }}>
-          User Creation
-        </Typography>
-      </Box>
+    <Box sx={{ p: 2, bgcolor: '#f7f9fb', minHeight: '100vh', width: `calc(100vw - ${sidebarWidth}px)` }}>
       {/* Form */}
-      <Paper
-        elevation={0}
-        sx={{
-          p: { xs: 1, md: 2 },
-          mb: 2,
-          borderRadius: 3,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        }}
-      >
-        {/* Form Row 1 */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            mb: 2,
-            alignItems: 'center',
-          }}
-        >
-          <TextField label="User ID" size="small" sx={{ flex: '1 1 160px', maxWidth: 200 }} />
-          <TextField label="Password" size="small" type="password" sx={{ flex: '1 1 160px', maxWidth: 200 }} />
-          <TextField label="User Name" size="small" sx={{ flex: '1 1 160px', maxWidth: 200 }} />
-          <TextField label="Email" size="small" sx={{ flex: '1 1 160px', maxWidth: 200 }} />
-          <Select
-            displayEmpty
+      <Paper sx={{ p: 2, mb: 2, borderRadius: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
+          <TextField
+            label="User ID"
             size="small"
-            defaultValue=""
-            sx={{ flex: '1 1 120px', maxWidth: 160, minWidth: 100 }}
-            renderValue={selected => selected || 'Role'}
-          >
-            <MenuItem value="" disabled>
-              Role
-            </MenuItem>
-            {roles.map(role => (
-              <MenuItem key={role} value={role}>
-                {role}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-        {/* Form Row 2 */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            alignItems: 'center',
-            mb: 2,
-          }}
-        >
-          <Button
-            variant="outlined"
-            component="label"
-            startIcon={<CloudUploadIcon sx={{ fontSize: 18 }} />}
-            sx={{
-              flex: '1 1 160px',
-              maxWidth: 200,
-              fontSize: 13,
-              height: 40,
-              textTransform: 'none'
-            }}
-          >
-            Upload Photo
-            <input type="file" hidden />
-          </Button>
-          <Select
-            displayEmpty
+            value={userId}
+            onChange={(e) => setuserId(e.target.value)}
+            error={!!errors.userId}
+            helperText={errors.userId}
+          />
+          <TextField
+            label="User Name"
             size="small"
-            defaultValue=""
-            sx={{ flex: '1 1 160px', maxWidth: 200, fontSize: 13, height: 40 }}
-            renderValue={selected => selected || 'Company Database'}
-          >
-            <MenuItem value="" disabled>
-              Company Database
-            </MenuItem>
-            <MenuItem value="Tom-Erp">Tom-Erp</MenuItem>
-            <MenuItem value="Tom-Cloud">Tom-Cloud</MenuItem>
-          </Select>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', ml: 1 }}>
-            <FormCheckbox label="Read" />
-            <FormCheckbox label="Edit" />
-            <FormCheckbox label="Delete" />
-            <FormCheckbox label="Active" />
-          </Box>
+            value={userName}
+            onChange={(e) => setuserName(e.target.value)}
+            error={!!errors.userName}
+            helperText={errors.userName}
+          />
+          <FormControl sx={{ flex: "1 1 100px" }} size="small" error={!!errors.roleId}>
+            <InputLabel>Roles</InputLabel>
+            <Select value={roleId} onChange={(e) => setroleId(e.target.value)}>
+              {roles.map((g) => (
+                <MenuItem key={g.role_id} value={g.role_id}>{g.role}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            label="Email"
+            size="small"
+            type="email"
+            value={inputEmail}
+            onChange={(e) => setinputEmail(e.target.value)}
+            error={!!errors.inputEmail}
+            helperText={errors.inputEmail}
+          />
+          <TextField
+            label="Password"
+            size="small"
+            type="password"
+            value={inputPassword}
+            onChange={(e) => setinputPassword(e.target.value)}
+            error={!!errors.inputPassword}
+            helperText={errors.inputPassword}
+          />
+          <FormControlLabel
+            control={<Checkbox checked={active} onChange={(e) => setActive(e.target.checked)} />}
+            label="Active"
+          />
         </Box>
-        {/* Action Buttons */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 2,
-            mt: 1,
-            justifyContent: { xs: 'flex-start', md: 'flex-end' }
-          }}
-        >
-          <Button variant="outlined" color="inherit" startIcon={<CancelIcon sx={{ fontSize: 18 }} />} sx={{ fontSize: 13, px: 2, minWidth: 90, height: 38 }}>
-            Cancel
-          </Button>
-          <Button variant="outlined" color="primary" startIcon={<SaveIcon sx={{ fontSize: 18 }} />} sx={{ fontSize: 13, px: 2, minWidth: 110, height: 38 }}>
-            Save Draft
-          </Button>
-          <Button variant="outlined" color="info" startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />} sx={{ fontSize: 13, px: 2, minWidth: 150, height: 38 }}>
-            Convert to Order
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            sx={{ minWidth: 90, fontWeight: 600, fontSize: 13, px: 2, height: 38 }}
-          >
-            Submit
-          </Button>
+
+        {/* Buttons */}
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: "flex-end",  }}>
+          <Button variant="outlined" startIcon={<CloseIcon />} sx={{fontWeight:"bold"}} onClick={onHandleCancel} >Cancel</Button>
+          <Button variant="outlined" startIcon={<SaveIcon />} onClick={onHandleSave}>Save Draft</Button>
+          <Button variant="outlined" color="info" startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />} sx={{ fontSize: 13, px: 2, minWidth: 150, height: 38 }}> Convert to Order </Button>
+          <Button variant="contained" color="error" onClick={onHandleCreateUserClick}>Submit</Button>
         </Box>
       </Paper>
-      {/* User Table */}
-      <Paper
-        sx={{
-          borderRadius: 3,
-          overflowX: 'auto',
-          width: '100%',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        }}
-      >
-        <Box sx={{ minWidth: 1100, width: '100%' }}>
-          <TableContainer sx={{ width: '100%' }}>
-            <Table size="small" sx={{ width: '100%' }}>
-              <TableHead>
-                <TableRow sx={{ bgcolor: '#f5f7fa' }}>
-                  <TableCell sx={{ fontSize: 13 }}>User id</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>User Name</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Email ID</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Role</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Company DB</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Active</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Read</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Edit</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Delete</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Actions</TableCell>
-                  <TableCell sx={{ fontSize: 13 }}>Alerts</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell sx={{ fontSize: 13 }}>{row.userId}</TableCell>
-                    <TableCell sx={{ fontSize: 13 }}>{row.userName}</TableCell>
-                    <TableCell sx={{ fontSize: 13 }}>{row.email}</TableCell>
-                    <TableCell sx={{ fontSize: 13 }}>{row.role}</TableCell>
-                    <TableCell sx={{ fontSize: 13 }}>{row.company}</TableCell>
+
+      {/* Table */}
+      <Paper sx={{ borderRadius: 3 }}>
+        <TableContainer>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>User id</TableCell>
+                <TableCell>User Name</TableCell>
+                <TableCell>Role</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Active</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                <TableRow><TableCell colSpan={6} align="center"><CircularProgress /></TableCell></TableRow>
+              ) : usersList.length === 0 ? (
+                <TableRow><TableCell colSpan={6} align="center">No data available</TableCell></TableRow>
+              ) : (
+                usersList.map((row, idx) => (
+                  <TableRow key={row.id} sx={{ backgroundColor: idx % 2 === 1 ? "#fafafa" : "inherit" }}>
+                    <TableCell>{row.user_id}</TableCell>
+                    <TableCell>{row.username}</TableCell>
+                    <TableCell>{row.Role.role}</TableCell>
+                    <TableCell>{row.email}</TableCell>
+                    <TableCell>{row.active ? "Active" : "Inactive"}</TableCell>
                     <TableCell>
-                      <Checkbox checked={row.active} color="primary" size="small" />
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox checked={row.read} color="primary" size="small" />
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox checked={row.edit} color="primary" size="small" />
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox checked={row.delete} color="primary" size="small" />
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="Edit">
-                        <IconButton size="small" color="primary">
-                          <SaveIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox checked={row.alerts} color="primary" size="small" />
+                      <IconButton color="primary" onClick={() => onHandleEdit(row)}>
+                        <EditIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+                ))
+              )}
+            </TableBody>
+          </Table>
+          <TablePagination
+            component="div"
+            count={rowCount}
+            page={paginationModel.page}
+            onPageChange={(_, newPage) => setPaginationModel(prev => ({ ...prev, page: newPage }))}
+            rowsPerPage={paginationModel.pageSize}
+            onRowsPerPageChange={(e) => setPaginationModel({ page: 0, pageSize: parseInt(e.target.value, 10) })}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+          />
+        </TableContainer>
       </Paper>
-    </Box>
-  )
-}
-
-// Helper for labeled checkbox
-function FormCheckbox({ label }) {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-      <Checkbox size="small" color="primary" />
-      <Typography variant="body2" sx={{ fontSize: 13 }}>{label}</Typography>
     </Box>
   )
 }

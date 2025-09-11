@@ -37,7 +37,7 @@ const AppContent = () => {
 
   useEffect(() => {
     if (user) {
-      // console.log(user);
+      console.log(user);
       setIsLoggedIn(true)
     } else {
       setIsLoggedIn(false)
@@ -83,7 +83,7 @@ const AppContent = () => {
       >
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
           <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
           <Route path="/usermaster" element={isLoggedIn ? <UserMaster sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/rolemaster" element={isLoggedIn ? <RoleMaster sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
@@ -112,4 +112,4 @@ const App = () => (
   </Router>
 )
 
-export default App
+// export default App

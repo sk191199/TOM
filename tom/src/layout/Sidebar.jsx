@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Drawer,
-  Tooltip,
-  useMediaQuery
-} from '@mui/material';
+import { Box, List, ListItem, ListItemIcon, ListItemText, Drawer, Tooltip, useMediaQuery } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -24,19 +15,13 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useNavigate } from 'react-router-dom';
+import tomLogo from "../data/images/TOM-logo.png";
 
 const SIDEBAR_WIDTH_EXPANDED = 220;
 const SIDEBAR_WIDTH_COLLAPSED = 60;
 
 // Submenu for Administration
-const administrationSubmenu = [
-  'User Master',
-  'Role Master',
-  'Document Numbering',
-  'Alerts',
-  'Change Password',
-  'Company Details'
-];
+const administrationSubmenu = ['User Master', 'Role Master', 'Document Numbering', 'Alerts', 'Change Password', 'Company Master'];
 
 // Example submenus for other menu items (customize as needed)
 const masterSubmenu = ['Payment term Master', 'Currency Master', 'UOM Master', "Finacial Year Master", "Subsidy Company Master", "Project Master", "Cost Center Creation"];
@@ -45,7 +30,8 @@ const salesSubmenu = ['Sales Order', 'Sales Invoice'];
 const purchaseSubmenu = ['Purchase Order', 'Purchase Invoice'];
 const cashBankSubmenu = ['Cash Entry', 'Bank Entry'];
 const journalsSubmenu = ['Journal Entry'];
-const accountingSubmenu = ["Account Creation", "Chart of Accounts"];
+const accountingSubmenu = ["Account Lists"];
+// , "Chart of Accounts"
 const inventorySubmenu = ['Stock List', 'Stock Movement'];
 const productionSubmenu = ['Production Order'];
 const crmSubmenu = ['Leads', 'Opportunities'];
@@ -73,9 +59,9 @@ const submenuLinks = {
   'User Master': '/usermaster',
   'Role Master': '/rolemaster',
   'Document Numbering': '/document-numbering',
-  "Alerts" : "/alerts",
-  'Change Password' : "/change-password",
-  "Company Details" : "/company-master",
+  "Alerts": "/alerts",
+  'Change Password': "/change-password",
+  "Company Master": "/company-master",
 
   //master
   'Payment term Master': '/payment-term-master',
@@ -87,8 +73,8 @@ const submenuLinks = {
   "Cost Center Creation": '/cost-center-creation',
 
   // accounting
-  "Account Creation": '/account-creation',
-  "Chart of Accounts": '/chart-of-accounts',
+  "Account Lists": '/account-list',
+  // "Chart of Accounts": '/chart-of-accounts',
 
   // ...add other submenu label-to-path mappings
 };
@@ -144,17 +130,20 @@ const Sidebar = ({ open, onClose }) => {
       {/* TOM Logo */}
       <Box
         component="img"
-        src="https://www.tom.sg/wp-content/uploads/2021/11/tom_logo-300x135.png"
+        // src="https://www.tom.sg/wp-content/uploads/2021/11/tom_logo-300x135.png"
+        src={tomLogo}
         alt="TOM Logo"
         sx={{
           width: open ? 120 : 40,
-          height: open ? 54 : 44,
+          // height: open ? 54 : 25,
           mx: 'auto',
           my: 2,
           display: 'block',
           transition: 'width 0.5s cubic-bezier(0.4,0,0.2,1)',
           flexShrink: 0,
+          cursor:"pointer"
         }}
+        onClick={()=>navigate('/dashboard')}
       />
       {/* Scrollable Menu Items */}
       <Box
@@ -190,7 +179,7 @@ const Sidebar = ({ open, onClose }) => {
               arrow
             >
               <ListItem
-                button
+                // button
                 onClick={e => item.submenu && handleMenuClick(idx, e)}
                 sx={{
                   color: 'white',

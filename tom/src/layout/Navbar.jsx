@@ -1,16 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, IconButton, InputBase, Avatar, Typography, useMediaQuery } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import HomeIcon from '@mui/icons-material/Home'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import LsService, { storageKey } from '../services/localstorage'
+import { useNavigate } from 'react-router-dom'
 
 const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
 
 const Navbar = ({ onMenuClick, sidebarOpen }) => {
-  const isMobile = useMediaQuery('(max-width:768px)')
-  const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED
+
+  const isMobile = useMediaQuery('(max-width:768px)');
+
+  const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED;
+
+  const navigate = useNavigate();
+  const user = LsService.getItem(storageKey)
+
+  useEffect(() => {
+    console.log(user);
+
+    if (!user) {
+      LsService.removeItem(storageKey);
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <Box
@@ -59,14 +75,17 @@ const Navbar = ({ onMenuClick, sidebarOpen }) => {
           />
         </Box>
       </Box>
+
       {/* Right: Icons and Profile */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: isMobile ? 1 : 2 }}>
         <IconButton sx={{ color: 'white' }}>
           <HomeIcon />
         </IconButton>
+
         <IconButton sx={{ color: 'white' }}>
           <NotificationsNoneIcon />
         </IconButton>
+
         <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
           <Avatar
             src="https://randomuser.me/api/portraits/men/32.jpg"
@@ -75,10 +94,10 @@ const Navbar = ({ onMenuClick, sidebarOpen }) => {
           {!isMobile && (
             <Box sx={{ display: 'flex', flexDirection: 'column', color: 'white' }}>
               <Typography sx={{ fontSize: 13, fontWeight: 500, lineHeight: 1 }}>
-                Amina Agarwal
+                {user.payload.username}
               </Typography>
               <Typography sx={{ fontSize: 11, opacity: 0.7, lineHeight: 1 }}>
-                UI, India
+                {user.payload.email}
               </Typography>
             </Box>
           )}

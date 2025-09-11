@@ -1,29 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Link,
-  InputAdornment,
-  IconButton
-} from '@mui/material';
+import { Box, Paper, TextField, Button, Typography, Link, InputAdornment, IconButton, } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { loginUser } from '../services/api';
+import LsService, { storageKey } from '../services/localstorage';
 
 const backgroundUrl =
-  'https://www.tom.sg/wp-content/uploads/2021/12/banner.jpg'; // Replace with your actual image if needed
+  'https://www.tom.sg/wp-content/uploads/2021/12/banner.jpg';
 
-const Login = ({ onLogin }) => {
-  const [showPassword, setShowPassword] = React.useState(false);
+const Login = () => {
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [errorMsg, setErrMesg] = useState(''); // string instead of object
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Your login logic here
-    if (onLogin) onLogin();
-    navigate('/dashboard');
+  const user = LsService.getItem(storageKey);
+
+  useEffect(() => {
+    // console.log(user);
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      return;
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setErrMesg('');
+    setErrors({ email: '', password: '' });
+
+    if (!inputEmail || !inputPassword) {
+      setErrors({
+        email: !inputEmail ? 'Please fill the Email Id' : '',
+        password: !inputPassword ? 'Please fill the password' : '',
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await loginUser({ email: inputEmail, password: inputPassword });
+      console.log(response.data);
+      console.log(response.data.user);
+
+      if (response.status === 200) {
+        // onLogin?.(response.data.user); // optional callback if you need
+        LsService.setItem(storageKey, response.data.user);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      setErrMesg(error.response?.data?.message || 'Something went wrong');
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,8 +69,8 @@ const Login = ({ onLogin }) => {
         width: '100vw',
         display: 'flex',
         alignItems: 'center',
-        paddingLeft: { xs: 0, sm: 10 }, // Responsive: 0 on mobile, 10 on sm+
-        justifyContent:{ xs: 'center', sm: 'flex-start' }, // Center on mobile, start on sm+
+        paddingLeft: { xs: 0, sm: 10 },
+        justifyContent: { xs: 'center', sm: 'flex-start' },
         background: `url(${backgroundUrl}) center center / cover no-repeat`,
         position: 'relative',
       }}
@@ -55,30 +91,38 @@ const Login = ({ onLogin }) => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
           <Box
             component="img"
-            src="https://www.tom.sg/wp-content/uploads/2021/11/tom_logo-300x135.png" // Replace with your TOM logo URL or import
+            src="https://www.tom.sg/wp-content/uploads/2021/11/tom_logo-300x135.png"
             alt="TOM Logo"
             sx={{ width: 120, mb: 1 }}
           />
-          
         </Box>
-        <Typography variant="body2" sx={{ mb: 0.5 }}>
-          Email Address
-        </Typography>
+
+        <Typography variant="body2">Email Address</Typography>
         <TextField
           size="small"
           placeholder="your email@company.com"
           fullWidth
           variant="outlined"
+          type="email"
+          value={inputEmail}
+          onChange={(e) => setInputEmail(e.target.value)}
+          error={!!errors.email}
+          helperText={errors.email}
+          disabled={loading}
         />
-        <Typography variant="body2" sx={{ mt: 1, mb: 0.5 }}>
-          Password
-        </Typography>
+
+        <Typography variant="body2">Password</Typography>
         <TextField
           size="small"
           placeholder="Enter your password"
           type={showPassword ? 'text' : 'password'}
           fullWidth
           variant="outlined"
+          value={inputPassword}
+          onChange={(e) => setInputPassword(e.target.value)}
+          error={!!errors.password}
+          helperText={errors.password}
+          disabled={loading}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -94,15 +138,24 @@ const Login = ({ onLogin }) => {
             ),
           }}
         />
+
         <Button
           variant="contained"
           color="error"
           fullWidth
           sx={{ mt: 2, mb: 1, py: 1.2, fontWeight: 600, fontSize: 16, textTransform: 'none' }}
           onClick={handleLogin}
+          disabled={loading}
         >
-          Sign In
+          {loading ? 'Signing in...' : 'Sign In'}
         </Button>
+
+        {errorMsg && (
+          <Typography sx={{ fontSize: '12px' }} color="error">
+            {errorMsg}
+          </Typography>
+        )}
+
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
           <Link href="#" underline="hover" fontSize={14}>
             Forgot password?
@@ -112,7 +165,8 @@ const Login = ({ onLogin }) => {
           </Link>
         </Box>
       </Paper>
-      {/* Optional: Overlay for darkening background */}
+
+      {/* Background Overlay */}
       <Box
         sx={{
           position: 'absolute',
