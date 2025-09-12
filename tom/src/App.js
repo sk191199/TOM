@@ -19,30 +19,33 @@ import SubsidyCompanyMaster from './components/SubsidyCompanyMaster/SubsidyCompa
 import ProjectMaster from './components/ProjectMaster/ProjectMaster'
 import CostCenterCreation from './components/CostCenterCreation/CostCenterCreation'
 import AccountList from './components/AccountCreation/AccountsList'
-import LsService, { storageKey } from './services/localstorage'
+// import LsService, { storageKey } from './services/localstorage'
 
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import SalesQuotationList from './Sales/SalesQuotation'
+import SalesOrder from './Sales/SalesOrder'
+// import ARInvoice from './Sales/ArInvoice'
 
 const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
 
 const AppContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const isMobile = useMediaQuery('(max-width:768px)')
   const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED
 
-  const user = LsService.getItem(storageKey)
+  // const user = LsService.getItem(storageKey)
 
-  useEffect(() => {
-    if (user) {
-      // console.log(user);
-      setIsLoggedIn(true)
-    } else {
-      setIsLoggedIn(false)
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     // console.log(user);
+  //     setIsLoggedIn(true)
+  //   } else {
+  //     setIsLoggedIn(false)
+  //   }
+  // }, [user])
 
   const handleSidebarToggle = () => setSidebarOpen((open) => !open)
   const handleSidebarClose = () => setSidebarOpen(false)
@@ -99,6 +102,10 @@ const AppContent = () => {
           <Route path="/project-master" element={isLoggedIn ? <ProjectMaster sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/cost-center-creation" element={isLoggedIn ? <CostCenterCreation sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/account-list" element={isLoggedIn ? <AccountList sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
+          <Route path="/sales-quotation" element={isLoggedIn ? <SalesQuotationList sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
+          <Route path="/sales-order" element={isLoggedIn ? <SalesOrder sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
+          {/* <Route path="/ar-invoice" element={isLoggedIn ? <ARInvoice sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} /> */}
+
           <Route path="*" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} />} />
         </Routes>
       </Box>

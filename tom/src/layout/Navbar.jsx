@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import HomeIcon from '@mui/icons-material/Home'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import LsService, { storageKey } from '../services/localstorage'
+// import LsService, { storageKey } from '../services/localstorage'
 import { useNavigate } from 'react-router-dom'
 
 const SIDEBAR_WIDTH_EXPANDED = 220
@@ -17,16 +17,16 @@ const Navbar = ({ onMenuClick, sidebarOpen }) => {
   const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED;
 
   const navigate = useNavigate();
-  const user = LsService.getItem(storageKey)
+  // const user = LsService.getItem(storageKey)
 
-  useEffect(() => {
-    console.log(user);
+  // useEffect(() => {
+  //   console.log(user);
 
-    if (!user) {
-      LsService.removeItem(storageKey);
-      navigate("/");
-    }
-  }, [user, navigate]);
+  //   if (!user) {
+  //     LsService.removeItem(storageKey);
+  //     navigate("/");
+  //   }
+  // }, [user, navigate]);
 
   return (
     <Box
@@ -94,10 +94,10 @@ const Navbar = ({ onMenuClick, sidebarOpen }) => {
           {!isMobile && (
             <Box sx={{ display: 'flex', flexDirection: 'column', color: 'white' }}>
               <Typography sx={{ fontSize: 13, fontWeight: 500, lineHeight: 1 }}>
-                {user.payload.username}
+                {/* {user.payload.username} */} sasi
               </Typography>
               <Typography sx={{ fontSize: 11, opacity: 0.7, lineHeight: 1 }}>
-                {user.payload.email}
+                {/* {user.payload.email} */} sasi@gmail.com
               </Typography>
             </Box>
           )}
