@@ -19,7 +19,8 @@ import SubsidyCompanyMaster from './components/SubsidyCompanyMaster/SubsidyCompa
 import ProjectMaster from './components/ProjectMaster/ProjectMaster'
 import CostCenterCreation from './components/CostCenterCreation/CostCenterCreation'
 import AccountList from './components/AccountCreation/AccountsList'
-// import LsService, { storageKey } from './services/localstorage'
+
+import LsService, { storageKey } from './services/localstorage' // sasi off
 
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -31,21 +32,24 @@ const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
 
 const AppContent = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const isMobile = useMediaQuery('(max-width:768px)')
-  const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // sasi off
+  // const [isLoggedIn, setIsLoggedIn] = useState(true); // sasi on
+  const isMobile = useMediaQuery('(max-width:768px)');
+  const sidebarWidth = sidebarOpen ? SIDEBAR_WIDTH_EXPANDED : SIDEBAR_WIDTH_COLLAPSED;
 
-  // const user = LsService.getItem(storageKey)
+  // sasi off from here
+  const user = LsService.getItem(storageKey)
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // console.log(user);
-  //     setIsLoggedIn(true)
-  //   } else {
-  //     setIsLoggedIn(false)
-  //   }
-  // }, [user])
+  useEffect(() => {
+    if (user) {
+      // console.log(user);
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [user])
+  // sasi till here
 
   const handleSidebarToggle = () => setSidebarOpen((open) => !open)
   const handleSidebarClose = () => setSidebarOpen(false)

@@ -184,7 +184,7 @@ const SalesOrder = () => {
                 <Table size="small">
                   <TableHead sx={{ backgroundColor: "#f1f3f6" }}>
                     <TableRow>
-                      <TableCell padding="checkbox">
+                      <TableCell padding="checkbox" sx={{ fontWeight: "bold" }}>
                         <Checkbox
                           checked={selected.length === rows.length && rows.length > 0}
                           indeterminate={selected.length > 0 && selected.length < rows.length}
@@ -192,13 +192,13 @@ const SalesOrder = () => {
                         />
                         Select
                       </TableCell>
-                      <TableCell>Doc Entry</TableCell>
-                      <TableCell>Doc Num</TableCell>
-                      <TableCell>Doc Date</TableCell>
-                      <TableCell>Customer Code</TableCell>
-                      <TableCell>Customer Name</TableCell>
-                      <TableCell>Document Type</TableCell>
-                      <TableCell align="center">Actions</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Doc Entry</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Doc Num</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Doc Date</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Customer Code</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontWeight: "bold" }}>Document Type</TableCell>
+                      <TableCell align="center" sx={{ fontWeight: "bold" }}>Actions</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

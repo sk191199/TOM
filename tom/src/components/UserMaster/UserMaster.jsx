@@ -154,9 +154,9 @@ const UserMaster = ({ sidebarOpen }) => {
   };
 
   return (
-    <Box sx={{ p: 2, bgcolor: '#f7f9fb', minHeight: '100vh', width: `calc(100vw - ${sidebarWidth}px)` }}>
+    <Box sx={{ p: 2, bgcolor: '#f7f9fb', minHeight: 'calc( 100vh - 56px)', width: `calc(100vw - ${sidebarWidth}px)` }}>
       {/* Form */}
-      <Paper sx={{ p: 2, mb: 2, borderRadius: 3 }}>
+      <Paper sx={{ p: 3, mb: 2, borderRadius: 3 }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
           <TextField
             label="User ID"
@@ -207,8 +207,8 @@ const UserMaster = ({ sidebarOpen }) => {
         </Box>
 
         {/* Buttons */}
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: "flex-end",  }}>
-          <Button variant="outlined" startIcon={<CloseIcon />} sx={{fontWeight:"bold"}} onClick={onHandleCancel} >Cancel</Button>
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: "flex-end", }}>
+          <Button variant="outlined" startIcon={<CloseIcon />} sx={{ fontWeight: "bold" }} onClick={onHandleCancel} >Cancel</Button>
           <Button variant="outlined" startIcon={<SaveIcon />} onClick={onHandleSave}>Save Draft</Button>
           <Button variant="outlined" color="info" startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />} sx={{ fontSize: 13, px: 2, minWidth: 150, height: 38 }}> Convert to Order </Button>
           <Button variant="contained" color="error" onClick={onHandleCreateUserClick}>Submit</Button>
@@ -220,7 +220,7 @@ const UserMaster = ({ sidebarOpen }) => {
         <TableContainer>
           <Table size="small">
             <TableHead>
-              <TableRow>
+              <TableRow sx={{ backgroundColor: "#f1f3f6" }}>
                 <TableCell>User id</TableCell>
                 <TableCell>User Name</TableCell>
                 <TableCell>Role</TableCell>

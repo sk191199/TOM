@@ -141,7 +141,7 @@ const CompanyMaster = () => {
   };
 
   return (
-    <Box sx={{ p: { xs: 2, md: 4 }, backgroundColor: "#f5f7fb", minHeight: "100vh" }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, backgroundColor: "#f5f7fb", minHeight: "calc( 100vh - 56px)" }}>
 
       {/* Header */}
       <Box
@@ -211,7 +211,7 @@ const CompanyMaster = () => {
             }}
             sx={{ flex: { xs: "1 1 100%", md: "1 1 30%" } }} />
 
-          <FormControl sx={{ flex: "1 1 250px" }} size="small" fullWidth >
+          <FormControl sx={{ flex: "1 1 365px" }} size="small" fullWidth >
             <InputLabel>Company Type</InputLabel>
             <Select
               value={companyType}
@@ -297,7 +297,7 @@ const CompanyMaster = () => {
       <Paper sx={{ overflowX: "auto" }}>
         <Table size="small">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: "#f1f3f6" }}>
               <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>UEN</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>GST No</TableCell>
@@ -310,7 +310,7 @@ const CompanyMaster = () => {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} align="center" rowSpan={2}>
+                <TableCell colSpan={7} align="center" rowSpan={2}>
                   <CircularProgress />
                 </TableCell>
               </TableRow>

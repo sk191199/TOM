@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Typography, Checkbox, Paper, IconButton, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, Dialog, DialogTitle, DialogContent, CircularProgress, } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { getFetchAllAccounts, updateAccountDetails } from "../../services/api";
+import { getFetchAllAccounts } from "../../services/api";
 import AddAccount from "./AddAccounts";
 import AccountEditsComponent from "./AccountEditsComponent";
 
@@ -27,6 +27,7 @@ const AccountList = () => {
                 page: paginationModel.page + 1, // backend is 1-based
                 limit: paginationModel.pageSize,
             });
+            console.log(response.data);
 
             const accData = response.data.data || [];
             setAccounts(accData);
@@ -85,7 +86,7 @@ const AccountList = () => {
                     <Paper sx={{ overflowX: "auto" }}>
                         <Table size="small">
                             <TableHead>
-                                <TableRow>
+                                <TableRow sx={{ backgroundColor: "#f1f3f6" }}>
                                     <TableCell sx={{ fontWeight: "bold" }}>Account ID</TableCell>
                                     <TableCell sx={{ fontWeight: "bold" }}>Account Code</TableCell>
                                     <TableCell sx={{ fontWeight: "bold" }}>Account Name</TableCell>
