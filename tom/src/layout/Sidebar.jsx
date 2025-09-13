@@ -26,7 +26,7 @@ const administrationSubmenu = ['User Master', 'Role Master', 'Document Numbering
 // Example submenus for other menu items (customize as needed)
 const masterSubmenu = ['Payment term Master', 'Currency Master', 'UOM Master', "Finacial Year Master", "Subsidy Company Master", "Project Master", "Cost Center Creation"];
 const customerSubmenu = ['Customer List', 'Vendor List'];
-const salesSubmenu = ['Sales Quotation', 'Sales Order', "AR Invoice"];
+const salesSubmenu = ['Sales Quotation', 'Sales Order', "AR Invoice", "Delivery Order"];
 const purchaseSubmenu = ['Purchase Order', 'Purchase Invoice'];
 const cashBankSubmenu = ['Cash Entry', 'Bank Entry'];
 const journalsSubmenu = ['Journal Entry'];
@@ -80,7 +80,8 @@ const submenuLinks = {
   //sales
   'Sales Quotation': '/sales-quotation',
   'Sales Order': '/sales-order',
-  "AR Invoice": '/ar-invoice',
+  "AR Invoice": '/sales-ar-invoice',
+  'Delivery Order': '/sales-delivery-order',
 
 };
 

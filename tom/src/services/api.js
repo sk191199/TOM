@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // export const baseURL = 'https://api.kkmartonline.com/'
-export const baseURL = 'http://192.168.0.108:1436/'
+export const baseURL = 'http://192.168.0.103:1436/'
 // export const baseURL = 'http://46.202.162.17:1436/'
 
 const api = axios.create({

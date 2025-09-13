@@ -26,7 +26,8 @@ import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import SalesQuotationList from './Sales/SalesQuotation'
 import SalesOrder from './Sales/SalesOrder'
-// import ARInvoice from './Sales/ArInvoice'
+import SalesARInvoice from './Sales/arInvoice/SalesARInvoice'
+import SalesDeliveryOrder from './Sales/deliveryOrder/SalesDeliveryOrder'
 
 const SIDEBAR_WIDTH_EXPANDED = 220
 const SIDEBAR_WIDTH_COLLAPSED = 60
@@ -108,7 +109,8 @@ const AppContent = () => {
           <Route path="/account-list" element={isLoggedIn ? <AccountList sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/sales-quotation" element={isLoggedIn ? <SalesQuotationList sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
           <Route path="/sales-order" element={isLoggedIn ? <SalesOrder sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
-          {/* <Route path="/ar-invoice" element={isLoggedIn ? <ARInvoice sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} /> */}
+          <Route path="/sales-ar-invoice" element={isLoggedIn ? <SalesARInvoice sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
+          <Route path="/sales-delivery-order" element={isLoggedIn ? <SalesDeliveryOrder sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
 
           <Route path="*" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} />} />
         </Routes>

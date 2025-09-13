@@ -1,21 +1,6 @@
 // SalesQuotationPage.jsx
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
-  IconButton,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import { Box, Typography, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, IconButton, TextField, MenuItem } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import PrintIcon from "@mui/icons-material/Print";
@@ -91,7 +76,7 @@ function SalesQuotationList({ onNew }) {
   };
 
   return (
-    <Box sx={{ backgroundColor: "#f5f8fc", minHeight: "100vh", p: { xs: 2, sm: 3, md: 4 } }}>
+    <Box sx={{ backgroundColor: "#f5f8fc", minHeight: "calc( 100vh - 56px)", p: { xs: 2, sm: 3, md: 4 } }}>
       {/* Header */}
       <Box
         sx={{

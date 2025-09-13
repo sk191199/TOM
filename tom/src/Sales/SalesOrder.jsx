@@ -109,7 +109,7 @@ const SalesOrder = () => {
     <div>
       {!showForm ? (
         /* ======= Sales Order List (initial page) ======= */
-        <Box sx={{ p: { xs: 2, md: 3 }, backgroundColor: "#f5f7fb", minHeight: "100vh" }}>
+        <Box sx={{ p: { xs: 2, md: 3 }, backgroundColor: "#f5f7fb", minHeight: "calc( 100vh - 56px)" }}>
           {/* Header */}
           <Box
             sx={{
