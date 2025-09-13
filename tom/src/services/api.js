@@ -29,8 +29,8 @@ export const getFetchCompanyTypes = () =>
 export const getFetchRoles = () =>
   api.get('fetch-roles');
 
-export const getFetchPaymentTerms = () =>
-  api.get('fetch-payment-terms');
+export const getFetchPaymentTerms = (params) =>
+  api.get('fetch-payment-terms', { params });
 
 export const getFetchAllAccounts = (params) =>
   api.get('fetch-all-chart-of-accounts', { params });
@@ -40,6 +40,24 @@ export const getFetchAllCompanies = (params) =>
 
 export const getFetchAllUsers = (params) =>
   api.get('get-all-users', { params });
+
+export const getFetchCurrencyList = (params) =>
+  api.get('fetch-currency', { params });
+
+export const getFetchUOMList = (params) =>
+  api.get('fetch-uom', { params });
+
+export const getFetchFinYearList = (params) =>
+  api.get('fetch-fy', { params });
+
+export const getFetchSubCompanyList = (params) =>
+  api.get('get-sub-companies', { params });
+
+export const getFetchProjectList = (params) =>
+  api.get('fetch-projects', { params });
+
+export const getFetchCostCenterList = (params) =>
+  api.get('fetch-cost-centers', { params });
 
 // create API's
 export const createChartAccount = (data) =>
@@ -54,10 +72,41 @@ export const createUser = (data) =>
 export const createPaymentTerms = (data) =>
   api.post('create-payment-term', data)
 
+export const createUOM = (data) =>
+  api.post('create-uom-master', data)
+
+export const createFinYear = (data) =>
+  api.post('create-fy', data)
+
+export const createSubCompany = (data) =>
+  api.post('create-sub-company', data)
+
+export const createProject = (data) =>
+  api.post('create-project', data)
+
+export const createCostCenter = (data) =>
+  api.post('create-cost-center', data)
+
 // Update API's
 export const updateAccountDetails = (id, data) =>
   api.put(`update-account-details/${id}`, data)
 
+export const updatePaymentTerms = (id, data) =>
+  api.put(`update-payment-term/${id}`, data)
 
+export const updateUOM = (id, data) =>
+  api.put(`update-uom/${id}`, data)
+
+export const updateFinYear = (id, data) =>
+  api.put(`update-fy/${id}`, data)
+
+export const updateSubCompany = (id, data) =>
+  api.put(`update-sub-company-details/${id}`, data)
+
+export const updateProject = (id, data) =>
+  api.put(`update-project-details/${id}`, data)
+
+export const updateCostCenter = (id, data) =>
+  api.put(`update-cost-center/${id}`, data)
 
 export default api;

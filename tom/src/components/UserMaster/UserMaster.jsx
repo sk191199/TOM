@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Box, Paper, Typography, TextField, Button, IconButton, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, MenuItem, Select,
-  FormControl,
-  InputLabel,
-  FormControlLabel,
-  CircularProgress,
-  TablePagination
-} from '@mui/material'
+import { Box, Paper, TextField, Button, IconButton, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem, Select, FormControl, InputLabel, FormControlLabel, CircularProgress, TablePagination, Typography } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import CancelIcon from '@mui/icons-material/Cancel'
+// import CancelIcon from '@mui/icons-material/Cancel'
 import PersonIcon from '@mui/icons-material/Person'
 import SaveIcon from "@mui/icons-material/Save";
 import { createUser, getFetchAllUsers, getFetchRoles } from '../../services/api'
@@ -155,6 +147,17 @@ const UserMaster = ({ sidebarOpen }) => {
 
   return (
     <Box sx={{ p: 2, bgcolor: '#f7f9fb', minHeight: 'calc( 100vh - 56px)', width: `calc(100vw - ${sidebarWidth}px)` }}>
+      <Typography
+        variant="h6"
+        fontWeight="bold"
+        display="flex"
+        alignItems="center"
+        gap={1}
+      >
+        <PersonIcon color='primary' />
+        User Master
+      </Typography>
+
       {/* Form */}
       <Paper sx={{ p: 3, mb: 2, borderRadius: 3 }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
@@ -218,7 +221,7 @@ const UserMaster = ({ sidebarOpen }) => {
       {/* Table */}
       <Paper sx={{ borderRadius: 3 }}>
         <TableContainer>
-          <Table size="small">
+          <Table>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#f1f3f6" }}>
                 <TableCell>User id</TableCell>

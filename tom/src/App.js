@@ -11,13 +11,13 @@ import DocumentNumbering from './components/DocumentNumbering/DocumentNumbering'
 import Alerts from './components/Alerts/Alerts'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 import CompanyMaster from './components/CompanyDetails/CompanyMaster'
-import PaymentTermMaster from './components/PaymentTermMaster/PaymentTermMaster'
-import CurrencyMaster from './components/CurrencyMaster/CurrencyMaster'
-import UomMaster from './components/UomMaster/UomMaster'
-import FinancialYearMaster from './components/FinancialYearMaster/FinancialYearMaster'
-import SubsidyCompanyMaster from './components/SubsidyCompanyMaster/SubsidyCompanyMaster'
-import ProjectMaster from './components/ProjectMaster/ProjectMaster'
-import CostCenterCreation from './components/CostCenterCreation/CostCenterCreation'
+import PaymentTermMaster from './components/MasterData/PaymentTermMaster'
+import CurrencyMaster from './components/MasterData/CurrencyMaster'
+import UomMaster from './components/MasterData/UomMaster'
+import FinancialYearMaster from './components/MasterData/FinancialYearMaster'
+import SubsidyCompanyMaster from './components/MasterData/SubsidyCompanyMaster'
+import ProjectMaster from './components/MasterData/ProjectMaster'
+import CostCenterCreation from './components/MasterData/CostCenterCreation'
 import AccountList from './components/AccountCreation/AccountsList'
 
 import LsService, { storageKey } from './services/localstorage' // sasi off
@@ -107,10 +107,10 @@ const AppContent = () => {
           <Route path="/project-master" element={isLoggedIn ? <ProjectMaster sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/cost-center-creation" element={isLoggedIn ? <CostCenterCreation sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
           <Route path="/account-list" element={isLoggedIn ? <AccountList sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
-          <Route path="/sales-quotation" element={isLoggedIn ? <SalesQuotationList sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
-          <Route path="/sales-order" element={isLoggedIn ? <SalesOrder sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
-          <Route path="/sales-ar-invoice" element={isLoggedIn ? <SalesARInvoice sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
-          <Route path="/sales-delivery-order" element={isLoggedIn ? <SalesDeliveryOrder sidebarOpen={sidebarOpen}/>: <Navigate to="/login" />} />
+          <Route path="/sales-quotation" element={isLoggedIn ? <SalesQuotationList sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
+          <Route path="/sales-order" element={isLoggedIn ? <SalesOrder sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
+          <Route path="/sales-ar-invoice" element={isLoggedIn ? <SalesARInvoice sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
+          <Route path="/sales-delivery-order" element={isLoggedIn ? <SalesDeliveryOrder sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
 
           <Route path="*" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} />} />
         </Routes>
